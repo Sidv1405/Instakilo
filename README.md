@@ -1,4 +1,4 @@
-# outsidergram
+# Instakilo
 
 A new Flutter project.
 
