@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:outsidergram/screen/login_screen.dart';
+import 'package:outsidergram/screen/log_in_screen.dart';
 
 void main() {
   runApp(const MyApp());

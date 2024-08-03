@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:outsidergram/screen/login_screen.dart';
+import 'package:outsidergram/screen/log_in_screen.dart';
 
-class SignUpMailScreen extends StatefulWidget {
-  const SignUpMailScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUpMailScreen> createState() => _SignUpMailScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpMailScreenState extends State<SignUpMailScreen> {
-  final email = TextEditingController();
-  FocusNode emailF = FocusNode();
+class _SignUpScreenState extends State<SignUpScreen> {
+  final mobileNumberController = TextEditingController();
+  final emailController = TextEditingController();
+  FocusNode mobileNumberFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
+
+  bool isSignUpWithPhone = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,36 +31,39 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
             SizedBox(height: 2.h),
             title(),
             content(
-                "Enter the email on which you can be contacted. "
-                "No one will see this on your profile.",
+                isSignUpWithPhone
+                    ? "Enter the mobile number on which you can be contacted. No one will see this on your profile."
+                    : "Enter the email on which you can be contacted. No one will see this on your profile.",
                 19.5),
             SizedBox(height: 16.h),
-            textInput(email, "Email address", emailF),
+            isSignUpWithPhone
+                ? textInput(
+                    mobileNumberController, "Mobile number", mobileNumberFocus, TextInputType.number)
+                : textInput(emailController, "Email address", emailFocus, TextInputType.emailAddress),
             SizedBox(height: 5.h),
             content("You may receive SMS notification from us for security and login purposes", 16),
             SizedBox(height: 16.h),
             nextStep(),
             SizedBox(height: 16.h),
-            signUpWithPhone(),
-            SizedBox(height: 340.h),
+            signUpSwitch(),
+            SizedBox(height: isSignUpWithPhone ? 300.h : 338.h), // Adjusting height based on the mode
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                child: Container(
-                  alignment: Alignment.center,
-                  child: TextButton(
-                    child: Text("Already have an account?",
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color: const Color(0xFF0081FD),
-                            fontWeight: FontWeight.bold)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LogInScreen()),
-                      );
-                    },
-                  ),
-                ))
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Container(
+                alignment: Alignment.center,
+                child: TextButton(
+                  child: Text("Already have an account?",
+                      style: TextStyle(
+                          fontSize: 14.sp, color: const Color(0xFF0081FD), fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LogInScreen()),
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -81,7 +89,7 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
     );
   }
 
-  Padding signUpWithPhone() {
+  Padding signUpSwitch() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Container(
@@ -94,10 +102,17 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
           border: Border.all(color: const Color(0x80767676), width: 1.w),
         ),
         child: TextButton(
-          child:
-              Text("Sign up with phone number", style: TextStyle(fontSize: 18.sp, color: Colors.black)),
+          style: ButtonStyle(
+            overlayColor: WidgetStateProperty.all(Colors.transparent),
+          ),
+          child: Text(
+            isSignUpWithPhone ? "Sign up with Email Address" : "Sign up with Mobile Number",
+            style: TextStyle(fontSize: 18.sp, color: Colors.black),
+          ),
           onPressed: () {
-            Navigator.pop(context);
+            setState(() {
+              isSignUpWithPhone = !isSignUpWithPhone;
+            });
           },
         ),
       ),
@@ -108,6 +123,7 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
     TextEditingController controller,
     String hint,
     FocusNode focusNode,
+    TextInputType keyboardType,
   ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -115,6 +131,9 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
         style: TextStyle(fontSize: 16.sp, color: Colors.black),
         controller: controller,
         focusNode: focusNode,
+        keyboardType: keyboardType,
+        inputFormatters:
+            keyboardType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           fillColor: const Color(0xFFF8F8F8),
           hintText: hint,
@@ -152,9 +171,9 @@ class _SignUpMailScreenState extends State<SignUpMailScreen> {
   Padding title() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: const Text(
-        "What's your email address?",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
+      child: Text(
+        isSignUpWithPhone ? "What's your mobile number?" : "What's your email address?",
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
       ),
     );
   }
