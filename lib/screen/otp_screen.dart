@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:outsidergram/screen/log_in_screen.dart';
-import 'package:outsidergram/screen/otp_screen.dart';
+import 'log_in_screen.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class OtpScreen extends StatefulWidget {
+  final String inputData;
+
+  const OtpScreen({super.key, required this.inputData});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  final mobileNumberController = TextEditingController();
-  final emailController = TextEditingController();
-  FocusNode mobileNumberFocus = FocusNode();
-  FocusNode emailFocus = FocusNode();
+class _OtpScreenState extends State<OtpScreen> {
+  final otpCode = TextEditingController();
+  FocusNode otpCodeF = FocusNode();
 
-  bool isSignUpWithPhone = true;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,39 +33,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(height: 2.h),
             title(),
             content(
-                isSignUpWithPhone
-                    ? "Enter the mobile number on which you can be contacted. No one will see this on your profile."
-                    : "Enter the email on which you can be contacted. No one will see this on your profile.",
+                "To confirm your account, enter the 6-digit code that we sent to ${widget.inputData}",
                 19.5),
             SizedBox(height: 16.h),
-            isSignUpWithPhone
-                ? textInput(
-                    mobileNumberController, "Mobile number", mobileNumberFocus, TextInputType.phone)
-                : textInput(emailController, "Email address", emailFocus, TextInputType.emailAddress),
-            SizedBox(height: 5.h),
-            content("You may receive SMS notification from us for security and login purposes", 16),
+            textInput(otpCode, "Confirmation code", otpCodeF),
             SizedBox(height: 16.h),
             nextStep(),
             SizedBox(height: 16.h),
-            signUpSwitch(),
-            SizedBox(height: isSignUpWithPhone ? 300.h : 338.h), // Adjusting height based on the mode
+            resendCode(),
+            SizedBox(height: 380.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Container(
-                alignment: Alignment.center,
-                child: TextButton(
-                  child: Text("Already have an account?",
-                      style: TextStyle(
-                          fontSize: 14.sp, color: const Color(0xFF0081FD), fontWeight: FontWeight.bold)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LogInScreen()),
-                    );
-                  },
-                ),
-              ),
-            )
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: TextButton(
+                    child: Text("Already have an account?",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: const Color(0xFF0081FD),
+                            fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LogInScreen()),
+                      );
+                    },
+                  ),
+                ))
           ],
         ),
       ),
@@ -82,27 +77,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           color: const Color(0xFF0081FD),
           borderRadius: BorderRadius.circular(2.r),
         ),
-        child: TextButton(
-          child: Text("Next", style: TextStyle(fontSize: 18.sp, color: Colors.white)),
-          onPressed: () {
-            String input = isSignUpWithPhone
-                ? mobileNumberController.text
-                : emailController.text;
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OtpScreen(inputData: input),
-              ),
-            );
-          },
+        child: Text(
+          "Next",
+          style: TextStyle(fontSize: 18.sp, color: Colors.white),
         ),
       ),
     );
   }
 
-
-  Padding signUpSwitch() {
+  Padding resendCode() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Container(
@@ -115,17 +98,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           border: Border.all(color: const Color(0x80767676), width: 1.w),
         ),
         child: TextButton(
-          style: ButtonStyle(
-            overlayColor: WidgetStateProperty.all(Colors.transparent),
-          ),
-          child: Text(
-            isSignUpWithPhone ? "Sign up with Email Address" : "Sign up with Mobile Number",
-            style: TextStyle(fontSize: 18.sp, color: Colors.black),
-          ),
+          child:
+              Text("I Didn't Receive the Code", style: TextStyle(fontSize: 18.sp, color: Colors.black)),
           onPressed: () {
-            setState(() {
-              isSignUpWithPhone = !isSignUpWithPhone;
-            });
+            Navigator.pop(context);
           },
         ),
       ),
@@ -136,7 +112,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     TextEditingController controller,
     String hint,
     FocusNode focusNode,
-    TextInputType keyboardType,
   ) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -144,9 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         style: TextStyle(fontSize: 16.sp, color: Colors.black),
         controller: controller,
         focusNode: focusNode,
-        keyboardType: keyboardType,
-        inputFormatters:
-            keyboardType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           fillColor: const Color(0xFFF8F8F8),
           hintText: hint,
@@ -184,9 +156,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Padding title() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
-      child: Text(
-        isSignUpWithPhone ? "What's your mobile number?" : "What's your email address?",
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
+      child: const Text(
+        "Enter the confirmation code",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
       ),
     );
   }
