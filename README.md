@@ -1,6 +1,11 @@
 # Instakilo
 Login:
-![Screenshot_20240803-141929](https://github.com/user-attachments/assets/83729287-951b-4241-8a66-06127d4fa67a)
+SizedBox(
+  width: 100.0, // Chiều rộng tối đa
+  height: 100.0, // Chiều cao tối đa
+  child: Image.network('![Screenshot_20240803-141929](https://github.com/user-attachments/assets/83729287-951b-4241-8a66-06127d4fa67a)'),
+)
+
 ![Screenshot_20240803-142013](https://github.com/user-attachments/assets/7d62e333-e3c3-4591-9d31-24fbf680514b)
 
 Sign up:
