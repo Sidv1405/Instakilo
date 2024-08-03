@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'signup_phone_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,18 +22,16 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               width: 96.w,
               height: 210.h,
             ),
-            Center(
-              child: Image.asset(
-                'images/logo.jpg',
-                width: 200.w,
-                fit: BoxFit.contain,
-              ),
+            Image.asset(
+              'images/logo.jpg',
+              width: 200.w,
+              fit: BoxFit.contain,
             ),
             SizedBox(height: 28.h),
             textInput(email, "Phone number, username or email", emailF, false),
@@ -116,9 +115,17 @@ class _LoginScreenState extends State<LoginScreen> {
               "Don't have an account?",
               style: TextStyle(fontSize: 13.sp),
             ),
-            Text(
-              " Sign Up",
-              style: TextStyle(fontSize: 13.sp, color: Colors.blue, fontWeight: FontWeight.bold),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignUpPhoneScreen()),
+                );
+              },
+              child: Text(
+                " Sign Up",
+                style: TextStyle(fontSize: 13.sp, color: Colors.blue, fontWeight: FontWeight.bold),
+              ),
             )
           ],
         ),
