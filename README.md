@@ -1,16 +1,11 @@
 # Instakilo
 Login:
-SizedBox(
-  width: 100.0, // Chiều rộng tối đa
-  height: 100.0, // Chiều cao tối đa
-  child: Image.network('![Screenshot_20240803-141929](https://github.com/user-attachments/assets/83729287-951b-4241-8a66-06127d4fa67a)'),
-)
-
-![Screenshot_20240803-142013](https://github.com/user-attachments/assets/7d62e333-e3c3-4591-9d31-24fbf680514b)
+![Screenshot_20240803-141929](https://github.com/user-attachments/assets/5db75f35-c5a0-4faf-b7fb-1f77c76234c0)
+![Screenshot_20240803-142013](https://github.com/user-attachments/assets/3286c506-7564-4351-acc9-447c4f9f2b72)
 
 Sign up:
-![Screenshot_20240803-142047](https://github.com/user-attachments/assets/984cd278-0f52-426f-894c-ddb5b338dfd5)
-![Screenshot_20240803-142107](https://github.com/user-attachments/assets/78daf978-2636-4bee-9408-8dcbc0baee40)
+![Screenshot_20240803-142047](https://github.com/user-attachments/assets/adc28cd6-5a5f-4f85-b429-1195e834095f)
+![Screenshot_20240803-142107](https://github.com/user-attachments/assets/25af180b-3603-47ea-8892-0b41ccc71b26)
 
 A new Flutter project.
 
