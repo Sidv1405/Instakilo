@@ -177,7 +177,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     });
                   },
                 )
-              : null,
+              : controller.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.cancel, color: Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          controller.clear();
+                        });
+                      },
+                    )
+                  : null,
           contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 9.h),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.r),
@@ -188,6 +197,9 @@ class _LoginScreenState extends State<LoginScreen> {
             borderSide: BorderSide(color: const Color(0xFF767676), width: 1.w),
           ),
         ),
+        onChanged: (text) {
+          setState(() {}); // Để đảm bảo rằng giao diện sẽ cập nhật khi văn bản thay đổi
+        },
       ),
     );
   }
